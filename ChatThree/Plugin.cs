@@ -113,7 +113,7 @@ public sealed class Plugin : IDalamudPlugin
 
             try
             {
-                if (File.Exists(chat2Config))
+                if (!File.Exists(chat3Config) && File.Exists(chat2Config))
                 {
                     // Read the config into memory as a string, then replace
                     // Chat2 with Chat3. This updates the assembly references.
@@ -136,6 +136,7 @@ public sealed class Plugin : IDalamudPlugin
         }
         this.Config.Migrate();
         this.Config.DidFirstStart = true;
+        this.Interface!.SavePluginConfig(this.Config);
 
         this.GameStarted = Process.GetCurrentProcess().StartTime.ToUniversalTime();
 

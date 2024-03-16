@@ -49,7 +49,11 @@ internal sealed class About : ISettingsTab
     {
         ImGui.PushTextWrapPos();
 
-        ImGui.TextUnformatted(string.Format(Language.Options_About_Opening, Plugin.PluginName));
+        ImGui.TextUnformatted(string.Format(Language.Options_About_Chat3, Plugin.PluginName));
+
+        ImGui.Spacing();
+
+        ImGui.TextUnformatted(string.Format(Language.Options_About_Opening, "Chat 2"));
 
         ImGui.Spacing();
 
@@ -73,7 +77,7 @@ internal sealed class About : ISettingsTab
         }
 
         ImGui.SameLine();
-        ImGui.TextUnformatted(string.Format(Language.Options_About_CrowdIn, Plugin.PluginName));
+        ImGui.TextUnformatted(string.Format(Language.Options_About_CrowdIn, "Chat 2"));
 
         ImGui.Spacing();
 

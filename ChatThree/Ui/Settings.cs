@@ -134,7 +134,7 @@ internal sealed class Settings : IUiComponent
             this.Ui.SettingsVisible = false;
         }
 
-        var buttonLabel = string.Format(Language.Settings_Kofi, Plugin.Name);
+        var buttonLabel = string.Format(Language.Settings_Kofi, "the original developer");
 
         ImGui.PushStyleColor(ImGuiCol.Button, ColourUtil.RgbaToAbgr(0xFF5E5BFF));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, ColourUtil.RgbaToAbgr(0xFF7775FF));
