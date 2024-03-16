@@ -421,6 +421,78 @@ namespace ChatThree.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ExtraChat Linkshell 1.
+        /// </summary>
+        internal static string ChatType_ExtraChat1 {
+            get {
+                return ResourceManager.GetString("ChatType_ExtraChat1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExtraChat Linkshell 2.
+        /// </summary>
+        internal static string ChatType_ExtraChat2 {
+            get {
+                return ResourceManager.GetString("ChatType_ExtraChat2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExtraChat Linkshell 3.
+        /// </summary>
+        internal static string ChatType_ExtraChat3 {
+            get {
+                return ResourceManager.GetString("ChatType_ExtraChat3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExtraChat Linkshell 4.
+        /// </summary>
+        internal static string ChatType_ExtraChat4 {
+            get {
+                return ResourceManager.GetString("ChatType_ExtraChat4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExtraChat Linkshell 5.
+        /// </summary>
+        internal static string ChatType_ExtraChat5 {
+            get {
+                return ResourceManager.GetString("ChatType_ExtraChat5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExtraChat Linkshell 6.
+        /// </summary>
+        internal static string ChatType_ExtraChat6 {
+            get {
+                return ResourceManager.GetString("ChatType_ExtraChat6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExtraChat Linkshell 7.
+        /// </summary>
+        internal static string ChatType_ExtraChat7 {
+            get {
+                return ResourceManager.GetString("ChatType_ExtraChat7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ExtraChat Linkshell 8.
+        /// </summary>
+        internal static string ChatType_ExtraChat8 {
+            get {
+                return ResourceManager.GetString("ChatType_ExtraChat8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Free Company.
         /// </summary>
         internal static string ChatType_FreeCompany {

@@ -165,6 +165,14 @@ internal static class ChatTypeExt
             ChatType.CrossLinkshell6 => Language.ChatType_CrossLinkshell6,
             ChatType.CrossLinkshell7 => Language.ChatType_CrossLinkshell7,
             ChatType.CrossLinkshell8 => Language.ChatType_CrossLinkshell8,
+            ChatType.ExtraChat1 => Language.ChatType_ExtraChat1,
+            ChatType.ExtraChat2 => Language.ChatType_ExtraChat2,
+            ChatType.ExtraChat3 => Language.ChatType_ExtraChat3,
+            ChatType.ExtraChat4 => Language.ChatType_ExtraChat4,
+            ChatType.ExtraChat5 => Language.ChatType_ExtraChat5,
+            ChatType.ExtraChat6 => Language.ChatType_ExtraChat6,
+            ChatType.ExtraChat7 => Language.ChatType_ExtraChat7,
+            ChatType.ExtraChat8 => Language.ChatType_ExtraChat8,
             _ => type.ToString(),
         };
     }

@@ -85,4 +85,13 @@ internal enum ChatType : ushort
     CrossLinkshell6 = 105,
     CrossLinkshell7 = 106,
     CrossLinkshell8 = 107,
+
+    ExtraChat1 = 1001,
+    ExtraChat2 = 1002,
+    ExtraChat3 = 1003,
+    ExtraChat4 = 1004,
+    ExtraChat5 = 1005,
+    ExtraChat6 = 1006,
+    ExtraChat7 = 1007,
+    ExtraChat8 = 1008,
 }

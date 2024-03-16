@@ -32,6 +32,14 @@ internal static class InputChannelExt
         InputChannel.Linkshell6 => ChatType.Linkshell6,
         InputChannel.Linkshell7 => ChatType.Linkshell7,
         InputChannel.Linkshell8 => ChatType.Linkshell8,
+        InputChannel.ExtraChat1 => ChatType.ExtraChat1,
+        InputChannel.ExtraChat2 => ChatType.ExtraChat2,
+        InputChannel.ExtraChat3 => ChatType.ExtraChat3,
+        InputChannel.ExtraChat4 => ChatType.ExtraChat4,
+        InputChannel.ExtraChat5 => ChatType.ExtraChat5,
+        InputChannel.ExtraChat6 => ChatType.ExtraChat6,
+        InputChannel.ExtraChat7 => ChatType.ExtraChat7,
+        InputChannel.ExtraChat8 => ChatType.ExtraChat8,
         _ => throw new ArgumentOutOfRangeException(nameof(input), input, null),
     };
 
@@ -83,6 +91,14 @@ internal static class InputChannelExt
         InputChannel.Linkshell6 => "/linkshell6",
         InputChannel.Linkshell7 => "/linkshell7",
         InputChannel.Linkshell8 => "/linkshell8",
+        InputChannel.ExtraChat1 => "/ecl1",
+        InputChannel.ExtraChat2 => "/ecl2",
+        InputChannel.ExtraChat3 => "/ecl3",
+        InputChannel.ExtraChat4 => "/ecl4",
+        InputChannel.ExtraChat5 => "/ecl5",
+        InputChannel.ExtraChat6 => "/ecl6",
+        InputChannel.ExtraChat7 => "/ecl7",
+        InputChannel.ExtraChat8 => "/ecl8",
         _ => "",
     };
 
