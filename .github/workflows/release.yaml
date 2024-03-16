@@ -20,21 +20,12 @@ jobs:
         run: |
           $ver = '${{ github.ref_name }}'
           echo "version=$ver" >> "$env:GITHUB_OUTPUT"
-          if ($ver.StartsWith('testing_')) {
-            $ver = $ver.Substring(8)
-            echo "testing=true" >> "$env:GITHUB_OUTPUT"
-            echo "configuration=Debug" >> "$env:GITHUB_OUTPUT"
-            echo "build_dir=./ChatThree/bin/Debug" >> "$env:GITHUB_OUTPUT"
-          } else {
-            echo "testing=false" >> "$env:GITHUB_OUTPUT"
-            echo "configuration=Release" >> "$env:GITHUB_OUTPUT"
-            echo "build_dir=./ChatThree/bin/Release" >> "$env:GITHUB_OUTPUT"
-          }
+          echo "configuration=Release" >> "$env:GITHUB_OUTPUT"
+          echo "build_dir=./ChatThree/bin/Release/net7.0-windows" >> "$env:GITHUB_OUTPUT"
 
       - name: Print Version
         run: |
           echo "Version: ${{ steps.version.outputs.version }}"
-          echo "Testing: ${{ steps.version.outputs.testing }}"
           echo "Configuration: ${{ steps.version.outputs.configuration }}"
           echo "Build Directory: ${{ steps.version.outputs.build_dir }}"
 
@@ -69,6 +60,11 @@ jobs:
         run: |
           $ver = '${{ steps.version.outputs.version }}'
           $build_dir = '${{ steps.version.outputs.build_dir }}'
+
+          if (Test-Path "${build_dir}/ChatThree") {
+            Remove-Item -Recurse -Force "${build_dir}/ChatThree"
+          }
+
           $path = "${build_dir}/ChatThree.json"
           $json = Get-Content -Raw $path | ConvertFrom-Json
           $json.AssemblyVersion = $ver
@@ -96,9 +92,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Teleport to Aethernet ${{ github.ref }}
+          release_name: Chat 3 ${{ github.ref }}
           draft: false
-          prerelease: ${{ steps.version.outputs.testing == 'true' }}
 
       - name: Upload Release Asset
         id: upload-release-asset
@@ -112,7 +107,6 @@ jobs:
           asset_content_type: application/zip
 
       - name: Write repo.json
-        if: steps.version.outputs.testing == 'false'
         run: |
           $ref = '${{ github.ref_name }}'
           $path = './repo.json'
@@ -120,21 +114,8 @@ jobs:
           $json[0].AssemblyVersion = $ref
           $json[0].TestingAssemblyVersion = $ref
           $json[0].DownloadLinkInstall = $json.DownloadLinkInstall -replace '[^/]+/ChatThree.zip',"$ref/ChatThree.zip"
-          $json[0].DownloadLinkTesting = $json.DownloadLinkTesting -replace '[^/]+/ChatThree.zip',"$ref/ChatThree.zip"
           $json[0].DownloadLinkUpdate = $json.DownloadLinkUpdate -replace '[^/]+/ChatThree.zip',"$ref/ChatThree.zip"
           $json[0].LastUpdate = ([DateTimeOffset](Get-Date)).ToUnixTimeSeconds()
-          $content = $json | ConvertTo-Json -AsArray
-          Set-Content -Path $path -Value $content
-
-      - name: Write repo.json (testing)
-        if: steps.version.outputs.testing == 'true'
-        run: |
-          $ref = '${{ github.ref_name }}'
-          $ver = '${{ steps.version.outputs.version }}'
-          $path = './repo.json'
-          $json = Get-Content -Raw $path | ConvertFrom-Json
-          $json[0].TestingAssemblyVersion = $ver
-          $json[0].DownloadLinkTesting = $json.DownloadLinkTesting -replace '[^/]+/.zip',"$ref/ChatThree.zip"
           $content = $json | ConvertTo-Json -AsArray
           Set-Content -Path $path -Value $content
 
