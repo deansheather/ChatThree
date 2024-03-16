@@ -14,6 +14,8 @@ internal class Configuration : IPluginConfiguration
 
     public int Version { get; set; } = LatestVersion;
 
+    public bool DidFirstStart = false;
+
     public bool HideChat = true;
     public bool HideDuringCutscenes = true;
     public bool HideWhenNotLoggedIn = true;

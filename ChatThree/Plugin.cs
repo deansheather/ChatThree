@@ -1,9 +1,12 @@
 using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 using ChatThree.Ipc;
 using ChatThree.Resources;
 using ChatThree.Util;
+using Dalamud.Configuration;
 using Dalamud.Game.ClientState.Objects;
+using Dalamud.Interface.Internal.Notifications;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
@@ -83,10 +86,58 @@ public sealed class Plugin : IDalamudPlugin
 #pragma warning disable CS8618
     public Plugin()
     {
-        this.GameStarted = Process.GetCurrentProcess().StartTime.ToUniversalTime();
+        // If Chat2 is enabled, refuse to load.
+        foreach (var plugin in this.Interface!.InstalledPlugins)
+        {
+            if (plugin.InternalName == "ChatTwo")
+            {
+                if (plugin.IsLoaded)
+                {
+                    this.Interface!.UiBuilder.AddNotification("Chat 3 cannot be loaded while Chat 2 is loaded", null, NotificationType.Error);
+                    throw new Exception("cowardly refusing to load Chat 3 while Chat 2 is loaded");
+                }
+                break;
+            }
+        }
 
+        // If Chat3 hasn't started yet, try to copy over the config from Chat2.
+        // This is super janky but makes migrating a breeze.
         this.Config = this.Interface!.GetPluginConfig() as Configuration ?? new Configuration();
+        if (!this.Config.DidFirstStart)
+        {
+            Log.Debug("Attempting to copy over Chat 2 data");
+            var chat3Config = this.Interface!.ConfigFile.FullName;
+            var chat2Config = Path.Combine(this.Interface!.ConfigFile.DirectoryName!, "ChatTwo.json");
+            Log.Debug($"Chat 3 config: {chat3Config}");
+            Log.Debug($"Chat 2 config: {chat2Config}");
+
+            try
+            {
+                if (File.Exists(chat2Config))
+                {
+                    // Read the config into memory as a string, then replace
+                    // Chat2 with Chat3. This updates the assembly references.
+                    var configData = File.ReadAllText(chat2Config);
+                    configData = configData.Replace("ChatTwo", "ChatThree");
+                    configData = configData.Replace("Chat 2", "Chat 3");
+                    Log.Debug($"cp '{chat2Config}' '{chat3Config}'");
+                    File.WriteAllText(chat3Config, configData);
+                    this.Config = this.Interface!.GetPluginConfig() as Configuration ?? new Configuration();
+                    this.Interface!.UiBuilder.AddNotification("Chat 3 copied over Chat 2 config", null, NotificationType.Info);
+                }
+            }
+            catch (Exception e)
+            {
+                this.Interface!.UiBuilder.AddNotification("Chat 3 failed to copy over Chat 2 config", e.ToString(), NotificationType.Error);
+                Log.Error($"Failed to copy over Chat 2 config: {e}");
+                this.Config = new Configuration();
+                this.Interface!.SavePluginConfig(this.Config);
+            }
+        }
         this.Config.Migrate();
+        this.Config.DidFirstStart = true;
+
+        this.GameStarted = Process.GetCurrentProcess().StartTime.ToUniversalTime();
 
         if (this.Config.Tabs.Count == 0)
         {
