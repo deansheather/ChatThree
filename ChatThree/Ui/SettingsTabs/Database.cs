@@ -1,5 +1,6 @@
 using ChatThree.Resources;
 using ChatThree.Util;
+using Dalamud.Interface.Internal.Notifications;
 using ImGuiNET;
 
 namespace ChatThree.Ui.SettingsTabs;
@@ -65,6 +66,7 @@ internal sealed class Database : ISettingsTab
             {
                 tab.Clear();
             }
+            this.Plugin.Interface!.UiBuilder.AddNotification("Wiped Chat 3 database", null, NotificationType.Info);
         }
         if (ImGui.IsItemHovered())
         {
