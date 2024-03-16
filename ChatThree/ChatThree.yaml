@@ -1,0 +1,22 @@
+name: Chat 3
+author: deansheather
+punchline: The Re-Boogaloo-ing - ♪ A whole new chat, a new fantastic chat window ♪
+description: |-
+  Chat 3 is a complete rewrite of the in-game chat window as a plugin. It
+  supports:
+
+  - Unlimited tabs
+  - Tabs that always send to a certain channel
+  - More flexible filtering
+  - RGB channel colouring
+  - Completely variable font size
+  - Sidebar tabs
+  - Unread counts
+  - Screenshot mode (obfuscate names)
+
+  Chat 3 is forked from Chat 2, which was originally written by Anna.
+
+  Differences from Chat 2:
+  - Nothing, yet.
+repo_url: https://github.com/deansheather/ChatThree
+accepts_feedback: false

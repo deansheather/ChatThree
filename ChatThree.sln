@@ -1,0 +1,16 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{25908243-FC0C-4DB4-A05D-BE4C635C5800}") = "ChatThree", "ChatThree\ChatThree.csproj", "{CC489D08-E8D0-4393-8C13-0538E0B1185E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC489D08-E8D0-4393-8C13-0538E0B1185E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC489D08-E8D0-4393-8C13-0538E0B1185E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC489D08-E8D0-4393-8C13-0538E0B1185E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC489D08-E8D0-4393-8C13-0538E0B1185E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
