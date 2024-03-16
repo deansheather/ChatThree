@@ -198,6 +198,12 @@ internal class Store : IDisposable
         this.Database = this.Connect();
     }
 
+    internal void ClearDatabase()
+    {
+        this.Database.DropCollection(Messages.Name);
+        this.Database.Checkpoint();
+    }
+
     private void Logout()
     {
         this.LastContentId = 0;

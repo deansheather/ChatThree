@@ -26,7 +26,7 @@ internal sealed class Settings : IUiComponent
             new Ui.SettingsTabs.Fonts(this.Mutable),
             new ChatColours(this.Mutable, this.Ui.Plugin),
             new Tabs(this.Ui.Plugin, this.Mutable),
-            new Database(this.Mutable, this.Ui.Plugin.Store),
+            new Database(this.Mutable, this.Ui.Plugin),
             new Miscellaneous(this.Mutable),
             new About(),
         };

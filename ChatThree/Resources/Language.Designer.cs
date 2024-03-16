@@ -1429,6 +1429,24 @@ namespace ChatThree.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear the message history database.
+        /// </summary>
+        internal static string Options_ClearDatabase_Button {
+            get {
+                return ResourceManager.GetString("Options_ClearDatabase_Button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes all message history. Cannot be restored. Hold Ctrl+Shift to click..
+        /// </summary>
+        internal static string Options_ClearDatabase_Tooltip {
+            get {
+                return ResourceManager.GetString("Options_ClearDatabase_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replace consecutive duplicate messages with a counter appended to the first instance of the message..
         /// </summary>
         internal static string Options_CollapseDuplicateMessages_Description {

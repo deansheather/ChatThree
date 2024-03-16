@@ -861,4 +861,10 @@
   <data name="Options_About_Chat3" xml:space="preserve">
     <value>{0} is a fork of Chat 2, which was originally created by Anna.</value>
   </data>
+  <data name="Options_ClearDatabase_Button" xml:space="preserve">
+    <value>Clear the message history database</value>
+  </data>
+  <data name="Options_ClearDatabase_Tooltip" xml:space="preserve">
+    <value>Removes all message history. Cannot be restored. Hold Ctrl+Shift to click.</value>
+  </data>
 </root>
