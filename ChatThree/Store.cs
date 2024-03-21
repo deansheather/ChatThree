@@ -155,10 +155,6 @@ internal class Store : IDisposable
             bson => DateTime.UnixEpoch.AddMilliseconds(bson.AsInt64)
         );
         this.Database = this.Connect();
-        this.Messages.EnsureIndex(msg => msg.Date);
-        this.Messages.EnsureIndex(msg => msg.SortCode);
-        this.Messages.EnsureIndex(msg => msg.ExtraChatChannel);
-
         this.MigrateWrapper();
 
         this.Plugin.ChatGui.ChatMessageUnhandled += this.ChatMessage;
@@ -185,11 +181,16 @@ internal class Store : IDisposable
         var dbPath = Path.Join(dir.FullName, "chat.db");
         var connection = this.Plugin.Config.SharedMode ? "shared" : "direct";
         var connString = $"Filename='{dbPath}';Connection={connection}";
-        return new LiteDatabase(connString, BsonMapper.Global)
+        var conn = new LiteDatabase(connString, BsonMapper.Global)
         {
             CheckpointSize = 1_000,
             Timeout = TimeSpan.FromSeconds(1),
         };
+        var messages = conn.GetCollection<Message>("messages");
+        messages.EnsureIndex(msg => msg.Date);
+        messages.EnsureIndex(msg => msg.SortCode);
+        messages.EnsureIndex(msg => msg.ExtraChatChannel);
+        return conn;
     }
 
     internal void Reconnect()
@@ -200,8 +201,21 @@ internal class Store : IDisposable
 
     internal void ClearDatabase()
     {
-        this.Database.DropCollection(Messages.Name);
-        this.Database.Checkpoint();
+        this.Database.Dispose();
+
+        // Move chat.db to chat-{timestamp}.db, then delete it in a separate
+        // thread.
+        var dir = this.Plugin.Interface.ConfigDirectory;
+        var dbPath = Path.Join(dir.FullName, "chat.db");
+        var newDbPath = Path.Join(dir.FullName, $"chat-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.db");
+        File.Move(dbPath, newDbPath);
+        new Thread(() => {
+            File.Delete(newDbPath);
+        }).Start();
+
+        // This sets up the indices again, and we don't need to run migrations
+        // since there's no data.
+        this.Database = this.Connect();
     }
 
     private void Logout()
