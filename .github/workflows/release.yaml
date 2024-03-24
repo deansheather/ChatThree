@@ -21,7 +21,7 @@ jobs:
           $ver = '${{ github.ref_name }}'
           echo "version=$ver" >> "$env:GITHUB_OUTPUT"
           echo "configuration=Release" >> "$env:GITHUB_OUTPUT"
-          echo "build_dir=./ChatThree/bin/Release/net7.0-windows" >> "$env:GITHUB_OUTPUT"
+          echo "build_dir=./ChatThree/bin/Release/net8.0-windows" >> "$env:GITHUB_OUTPUT"
 
       - name: Print Version
         run: |
@@ -36,7 +36,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: "7.x.x"
+          dotnet-version: "8.x.x"
 
       - name: Restore dependencies
         run: dotnet restore
