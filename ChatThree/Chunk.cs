@@ -68,6 +68,16 @@ internal class TextChunk : Chunk
     {
     }
 #pragma warning restore CS8618
+
+    public TextChunk CopyStyle(ChunkSource source, Payload? link, string content)
+    {
+        return new TextChunk(source, link, content) {
+            FallbackColour = this.FallbackColour,
+            Foreground = this.Foreground,
+            Glow = this.Glow,
+            Italic = this.Italic,
+        };
+    }
 }
 
 internal class IconChunk : Chunk

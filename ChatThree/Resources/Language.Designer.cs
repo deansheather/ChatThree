@@ -1096,6 +1096,15 @@ namespace ChatThree.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy link to clipboard.
+        /// </summary>
+        internal static string Context_CopyLink {
+            get {
+                return ResourceManager.GetString("Context_CopyLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide chat.
         /// </summary>
         internal static string Context_HideChat {
@@ -1173,6 +1182,15 @@ namespace ChatThree.Resources {
         internal static string Context_Link {
             get {
                 return ResourceManager.GetString("Context_Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open link in browser.
+        /// </summary>
+        internal static string Context_OpenInBrowser {
+            get {
+                return ResourceManager.GetString("Context_OpenInBrowser", resourceCulture);
             }
         }
         

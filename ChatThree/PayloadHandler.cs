@@ -16,6 +16,7 @@ using Action = System.Action;
 using DalamudPartyFinderPayload = Dalamud.Game.Text.SeStringHandling.Payloads.PartyFinderPayload;
 using ChatThreePartyFinderPayload = ChatThree.Util.PartyFinderPayload;
 using Dalamud.Interface.Internal.Notifications;
+using System.Diagnostics;
 
 namespace ChatThree;
 
@@ -81,6 +82,12 @@ internal sealed class PayloadHandler
             case ItemPayload item:
                 {
                     this.DrawItemPopup(item);
+                    drawn = true;
+                    break;
+                }
+            case URIPayload uri:
+                {
+                    this.DrawUriPopup(uri);
                     drawn = true;
                     break;
                 }
@@ -382,6 +389,11 @@ internal sealed class PayloadHandler
 
                     break;
                 }
+            case URIPayload uri:
+                {
+                    this.TryOpenURI(uri.Uri);
+                    break;
+                }
         }
     }
 
@@ -506,6 +518,39 @@ internal sealed class PayloadHandler
         {
             ImGui.SetClipboardText(name.TextValue);
         }
+    }
+
+    private void DrawUriPopup(URIPayload uri)
+    {
+        ImGui.TextUnformatted($"URL at {uri.Uri.Authority}");
+        ImGui.Separator();
+
+        if (ImGui.Selectable(Language.Context_OpenInBrowser))
+        {
+            this.TryOpenURI(uri.Uri);
+        }
+
+        if (ImGui.Selectable(Language.Context_CopyLink))
+        {
+            ImGui.SetClipboardText(uri.Uri.ToString());
+            this.Ui.Plugin.Interface.UiBuilder.AddNotification("Chat 3 copied link to clipboard", null, NotificationType.Info);
+        }
+    }
+
+    private void TryOpenURI(Uri uri)
+    {
+        new Thread(() => {
+            try
+            {
+                Plugin.Log.Info($"Opening URI {uri.ToString()} in default browser");
+                Process.Start(new ProcessStartInfo(uri.ToString()) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                Plugin.Log.Error(ex, "Error opening URI");
+                this.Ui.Plugin.Interface.UiBuilder.AddNotification("Chat 3 could not open URI", null, NotificationType.Error);
+            }
+        }).Start();
     }
 
     private void DrawEventItemPopup(ItemPayload payload)
