@@ -183,6 +183,11 @@ internal class Message
     private List<Chunk> ReplaceContentURLs()
     {
         var newChunks = new List<Chunk>();
+        void AddChunk(Chunk chunk) {
+            chunk.Message = this;
+            newChunks.Add(chunk);
+        }
+
         foreach (var chunk in this.Content)
         {
             // If it's not a text chunk or it already links to somewhere,
@@ -199,9 +204,9 @@ internal class Message
             foreach (Match match in matches.Cast<Match>())
             {
                 // Add the text before the URL.
-                if (match.Index > 0)
+                if (match.Index > remainderIndex)
                 {
-                    newChunks.Add(text.CopyStyle(chunk.Source, chunk.Link, text.Content[remainderIndex..match.Index]));
+                    AddChunk(text.CopyStyle(chunk.Source, chunk.Link, text.Content[remainderIndex..match.Index]));
                 }
 
                 // Update the remainder index.
@@ -211,7 +216,7 @@ internal class Message
                 try
                 {
                     var link = URIPayload.ResolveURI(match.Value);
-                    newChunks.Add(text.CopyStyle(chunk.Source, link, match.Value));
+                    AddChunk(text.CopyStyle(chunk.Source, link, match.Value));
                 }
                 catch (UriFormatException)
                 {
@@ -226,7 +231,7 @@ internal class Message
             // Add the text after the last URL.
             if (remainderIndex < text.Content.Length)
             {
-                newChunks.Add(text.CopyStyle(chunk.Source, null, text.Content[remainderIndex..]));
+                AddChunk(text.CopyStyle(chunk.Source, chunk.Link, text.Content[remainderIndex..]));
             }
         }
 
