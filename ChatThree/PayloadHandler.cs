@@ -15,6 +15,7 @@ using Lumina.Excel.GeneratedSheets;
 using Action = System.Action;
 using DalamudPartyFinderPayload = Dalamud.Game.Text.SeStringHandling.Payloads.PartyFinderPayload;
 using ChatThreePartyFinderPayload = ChatThree.Util.PartyFinderPayload;
+using Dalamud.Interface.Internal.Notifications;
 
 namespace ChatThree;
 
@@ -99,6 +100,7 @@ internal sealed class PayloadHandler
         {
             return;
         }
+        ImGui.Separator();
 
         var contentId = chunk.Message?.ContentId ?? 0;
         var sender = chunk.Message?.Sender
@@ -132,16 +134,17 @@ internal sealed class PayloadHandler
         }
     }
 
-    private void ContextFooter(bool separator, Chunk chunk)
+    private void ContextFooter(bool didCustomContext, Chunk chunk)
     {
-        if (separator)
+        if (didCustomContext)
         {
             ImGui.Separator();
-        }
 
-        if (!ImGui.BeginMenu(Plugin.Name))
-        {
-            return;
+            // Only render the Chat 3 options in a submenu if we've already
+            // rendered a custom context menu.
+            if (!ImGui.BeginMenu(Plugin.Name)) {
+                return;
+            }
         }
 
         ImGui.Checkbox(Language.Context_ScreenshotMode, ref this.Ui.ScreenshotMode);
@@ -153,7 +156,7 @@ internal sealed class PayloadHandler
 
         if (chunk.Message is { } message)
         {
-            if (ImGui.BeginMenu(Language.Context_Copy))
+            if (ImGui.Selectable(Language.Context_Copy))
             {
                 var text = message.Sender
                     .Concat(message.Content)
@@ -161,14 +164,9 @@ internal sealed class PayloadHandler
                     .Cast<TextChunk>()
                     .Select(text => text.Content)
                     .Aggregate(string.Concat);
-                ImGui.InputTextMultiline(
-                    "##chat3-copy",
-                    ref text,
-                    (uint)text.Length,
-                    new Vector2(350, 100) * ImGuiHelpers.GlobalScale,
-                    ImGuiInputTextFlags.ReadOnly
-                );
-                ImGui.EndMenu();
+
+                ImGui.SetClipboardText(text);
+                this.Ui.Plugin.Interface!.UiBuilder.AddNotification("Chat 3 copied message to clipboard", null, NotificationType.Info);
             }
 
             var col = ImGui.GetStyle().Colors[(int)ImGuiCol.TextDisabled];
@@ -183,7 +181,7 @@ internal sealed class PayloadHandler
             }
         }
 
-        ImGui.EndMenu();
+        if (didCustomContext) ImGui.EndMenu();
     }
 
     internal void Click(Chunk chunk, Payload? payload, ImGuiMouseButton button)
