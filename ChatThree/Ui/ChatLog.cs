@@ -537,9 +537,15 @@ internal sealed class ChatLog : IUiComponent
                     ?.Name
                     ?.RawString ?? "???";
 
+                var playerName = this._tellTarget.Name;
+                if (this.Ui.ScreenshotMode)
+                {
+                    playerName = this.HashPlayer(this._tellTarget.Name, this._tellTarget.World);
+                }
+
                 this.DrawChunks(new Chunk[] {
                     new TextChunk(ChunkSource.None, null, "Tell "),
-                    new TextChunk(ChunkSource.None, null, this._tellTarget.Name),
+                    new TextChunk(ChunkSource.None, null, playerName),
                     new IconChunk(ChunkSource.None, null, BitmapFontIcon.CrossWorld),
                     new TextChunk(ChunkSource.None, null, world),
                 });
@@ -1609,6 +1615,12 @@ internal sealed class ChatLog : IUiComponent
         }
     }
 
+    private string HashPlayer(string playerName, uint worldID)
+    {
+        var hashCode = $"{this.Ui.Salt}{playerName}{worldID}".GetHashCode();
+        return $"Player {hashCode:X8}";
+    }
+
     private void DrawChunk(Chunk chunk, bool wrap = true, PayloadHandler? handler = null, float lineWidth = 0f)
     {
         if (chunk is IconChunk icon && this._fontIcon != null)
@@ -1671,13 +1683,11 @@ internal sealed class ChatLog : IUiComponent
         {
             if (chunk.Link is PlayerPayload playerPayload)
             {
-                var hashCode = $"{this.Ui.Salt}{playerPayload.PlayerName}{playerPayload.World.RowId}".GetHashCode();
-                content = $"Player {hashCode:X8}";
+                content = this.HashPlayer(playerPayload.PlayerName, playerPayload.World.RowId);
             }
             else if (this.Ui.Plugin.ClientState.LocalPlayer is { } player && content.Contains(player.Name.TextValue))
             {
-                var hashCode = $"{this.Ui.Salt}{player.Name.TextValue}{player.HomeWorld.Id}".GetHashCode();
-                content = content.Replace(player.Name.TextValue, $"Player {hashCode:X8}");
+                content = this.HashPlayer(player.Name.TextValue, player.HomeWorld.Id);
             }
         }
 
