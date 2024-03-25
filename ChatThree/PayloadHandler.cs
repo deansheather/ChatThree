@@ -188,6 +188,10 @@ internal sealed class PayloadHandler
             }
         }
 
+        if (ImGui.Selectable("Debug Menu")) {
+            this.Ui.ChunkDebug.Open(chunk);
+        }
+
         if (didCustomContext) ImGui.EndMenu();
     }
 

@@ -58,15 +58,19 @@ internal sealed class PluginUi : IDisposable
 
     private readonly ChatLog _chatLog;
 
+    internal readonly ChunkDebug ChunkDebug;
+
     internal unsafe PluginUi(Plugin plugin)
     {
         this.Plugin = plugin;
         this.Salt = new Random().Next().ToString();
 
         this._chatLog = new ChatLog(this);
+        this.ChunkDebug = new ChunkDebug(this._chatLog);
         this.Components = new List<IUiComponent> {
             new Settings(this),
             this._chatLog,
+            this.ChunkDebug,
         };
 
         this._fontCfg = new ImFontConfigPtr(ImGuiNative.ImFontConfig_ImFontConfig())
