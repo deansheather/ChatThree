@@ -1685,7 +1685,7 @@ internal sealed class ChatLog : IUiComponent
         var content = text.Content;
         if (this.Ui.ScreenshotMode)
         {
-            if (chunk.Link is PlayerPayload playerPayload)
+            if (chunk.Link is PlayerPayload playerPayload && content.Contains(playerPayload.PlayerName))
             {
                 content = this.HashPlayer(playerPayload.PlayerName, playerPayload.World.RowId);
             }
