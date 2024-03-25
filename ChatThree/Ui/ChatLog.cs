@@ -43,6 +43,7 @@ internal sealed class ChatLog : IUiComponent
     private bool _fixCursor;
     private int _autoCompleteSelection;
     private bool _autoCompleteShouldScroll;
+    private long _lastActivity = 0;
 
     internal Vector2 LastWindowSize { get; private set; } = Vector2.Zero;
     internal Vector2 LastWindowPos { get; private set; } = Vector2.Zero;
@@ -227,7 +228,7 @@ internal sealed class ChatLog : IUiComponent
             case "toggle":
                 this._hideState = this._hideState switch
                 {
-                    HideState.User or HideState.CutsceneOverride => HideState.None,
+                    HideState.User or HideState.CutsceneOverride or HideState.Inactivity => HideState.None,
                     HideState.Cutscene => HideState.CutsceneOverride,
                     HideState.None => HideState.User,
                     _ => this._hideState,
@@ -421,6 +422,7 @@ internal sealed class ChatLog : IUiComponent
         Cutscene,
         CutsceneOverride,
         User,
+        Inactivity,
     }
 
     private HideState _hideState = HideState.None;
@@ -440,6 +442,16 @@ internal sealed class ChatLog : IUiComponent
     /// <returns>true if window was rendered</returns>
     private unsafe bool DrawChatLog()
     {
+        var now = Stopwatch.GetTimestamp();
+        var lastActivity = Math.Max(
+                // FIXME(auri): this only takes into account the last active tab of
+                // the main ChatThree window. Messages in other windows will
+                // not increment the activity ticker.
+                this.Ui.Plugin.Config.Tabs.ElementAtOrDefault(this.LastTab)?.LastActivity ?? 0,
+                this._lastActivity);
+        // TODO(auri): make the timeout configurable.
+        var isInactive = now - lastActivity > TimeSpan.TicksPerSecond * 3;
+
         // if the chat has no hide state and in a cutscene, set the hide state to cutscene
         if (this.Ui.Plugin.Config.HideDuringCutscenes && this._hideState == HideState.None && (this.CutsceneActive || this.GposeActive))
         {
@@ -464,7 +476,16 @@ internal sealed class ChatLog : IUiComponent
             this._hideState = HideState.None;
         }
 
-        if (this._hideState is HideState.Cutscene or HideState.User)
+        if (this._hideState == HideState.None && isInactive) {
+            this._hideState = HideState.Inactivity;
+        }
+
+        if (this._hideState == HideState.Inactivity && (!isInactive || this.Activate))
+        {
+            this._hideState = HideState.None;
+        }
+
+        if (this._hideState is HideState.Cutscene or HideState.User or HideState.Inactivity)
         {
             return false;
         }
@@ -503,6 +524,11 @@ internal sealed class ChatLog : IUiComponent
             this._wasDocked = ImGui.IsWindowDocked();
             ImGui.End();
             return false;
+        }
+
+        if (ImGui.IsWindowHovered(ImGuiHoveredFlags.ChildWindows))
+        {
+            this._lastActivity = now;
         }
 
         var resized = this.LastWindowSize != ImGui.GetWindowSize();
@@ -711,6 +737,11 @@ internal sealed class ChatLog : IUiComponent
         if (ImGui.IsItemActive())
         {
             this.HandleKeybinds(true);
+            // This refresh cannot be consolidated into the IsWindowHovered
+            // check as IsWindowFocused because the window stays focused until
+            // the user clicks off of it, even if the input is unfocused via
+            // Escape.
+            this._lastActivity = now;
         }
 
         if (!this.Activate && !ImGui.IsItemActive())

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using ChatThree.Code;
 using ChatThree.Resources;
 using ChatThree.Ui;
@@ -190,6 +191,9 @@ internal class Tab
     public uint Unread;
 
     [NonSerialized]
+    public long LastActivity = 0;
+
+    [NonSerialized]
     public SemaphoreSlim MessagesMutex = new(1, 1);
 
     [NonSerialized]
@@ -219,7 +223,7 @@ internal class Tab
         {
             this.Messages.RemoveAt(0);
         }
-
+        this.LastActivity = Stopwatch.GetTimestamp();
         this.MessagesMutex.Release();
 
         if (unread)
