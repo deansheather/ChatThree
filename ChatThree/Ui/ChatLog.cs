@@ -719,7 +719,10 @@ internal sealed class ChatLog : IUiComponent
             this.HandleKeybinds(true);
         }
 
-        if (!this.Activate && !ImGui.IsItemActive())
+        // If we're currently using a temporary channel, switch back to the
+        // actual channel when the input loses focus unless the auto-translate
+        // popup is open.
+        if (this._tempChannel != null && !this.Activate && !ImGui.IsItemActive() && this._autoCompleteInfo == null)
         {
             if (this._tempChannel is InputChannel.Tell)
             {
@@ -797,7 +800,9 @@ internal sealed class ChatLog : IUiComponent
                             reason = TellReason.Friend;
                         }
 
-                        this.Ui.Plugin.Functions.Chat.SendTell(reason, target.ContentId, target.Name, (ushort)world.RowId, trimmed);
+                        var tellBytes = Encoding.UTF8.GetBytes(trimmed);
+                        AutoTranslate.ReplaceWithPayload(this.Ui.Plugin.DataManager, ref tellBytes);
+                        this.Ui.Plugin.Functions.Chat.SendTell(reason, target.ContentId, target.Name, (ushort)world.RowId, Encoding.UTF8.GetString(tellBytes));
                     }
 
                     if (this._tempChannel is InputChannel.Tell)
@@ -807,7 +812,6 @@ internal sealed class ChatLog : IUiComponent
 
                     goto Skip;
                 }
-
 
                 if (this._tempChannel != null)
                 {
