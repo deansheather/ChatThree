@@ -1085,7 +1085,18 @@ namespace ChatThree.Resources {
                 return ResourceManager.GetString("Context_Copy", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Copy Message.
+        /// </summary>
+        internal static string Context_CopyMessage
+        {
+            get
+            {
+                return ResourceManager.GetString("Context_CopyMessage", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Copy Item Name.
         /// </summary>
