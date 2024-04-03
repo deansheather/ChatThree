@@ -897,4 +897,7 @@
     <data name="Context_OpenInBrowser">
         <value>Open link in browser</value>
     </data>
+    <data name="Context_CopyMessage">
+        <value>Copy Message</value>
+    </data>
 </root>

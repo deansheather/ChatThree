@@ -176,6 +176,18 @@ internal sealed class PayloadHandler
                 this.Ui.Plugin.Interface!.UiBuilder.AddNotification("Chat 3 copied message to clipboard", null, NotificationType.Info);
             }
 
+            if (ImGui.Selectable(Language.Context_CopyMessage))
+            {
+                var text = message.Content
+                    .Where(chunk => chunk is TextChunk)
+                    .Cast<TextChunk>()
+                    .Select(text => text.Content)
+                    .Aggregate(string.Concat);
+
+                ImGui.SetClipboardText(text);
+                this.Ui.Plugin.Interface!.UiBuilder.AddNotification("Chat 3 copied message to clipboard", null, NotificationType.Info);
+            }
+
             var col = ImGui.GetStyle().Colors[(int)ImGuiCol.TextDisabled];
             ImGui.PushStyleColor(ImGuiCol.Text, col);
             try
