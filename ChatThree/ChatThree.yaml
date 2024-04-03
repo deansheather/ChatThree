@@ -16,7 +16,17 @@ description: |-
 
   Chat 3 is forked from Chat 2, which was originally written by Anna.
 
+  If you are already using Chat 2, please disable it before enabling Chat 3.
+  Chat 3 will refuse to load if Chat 2 is enabled. If you have an existing Chat
+  2 configuration, it will be copied over on first load.
+
   Differences from Chat 2:
-  - Nothing, yet.
+  - Clickable URLs
+  - Add a button to only copy the message content, not including the sender
+  - Ability to select ExtraChat channels as input channels for tabs
+  - Replaced copy popover with clipboard copy
+  - Button to fully delete database (to save disk space and speed up load times)
+  - Various fixes
+  - Upgraded to .NET 8.0
 repo_url: https://github.com/deansheather/ChatThree
 accepts_feedback: false

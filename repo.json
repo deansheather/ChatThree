@@ -3,7 +3,7 @@
     "Author": "deansheather",
     "Name": "Chat 3",
     "Punchline": "The Re-Boogaloo-ing - ♪ A whole new chat, a new fantastic chat window ♪",
-    "Description": "Chat 3 is a complete rewrite of the in-game chat window as a plugin. It\nsupports:\n\n- Unlimited tabs\n- Tabs that always send to a certain channel\n- More flexible filtering\n- RGB channel colouring\n- Completely variable font size\n- Sidebar tabs\n- Unread counts\n- Screenshot mode (obfuscate names)\n\nChat 3 is forked from Chat 2, which was originally written by Anna.\n\nDifferences from Chat 2:\n- Nothing, yet.",
+    "Description": "Chat 3 is a complete rewrite of the in-game chat window as a plugin. It\nsupports:\n\n- Unlimited tabs\n- Tabs that always send to a certain channel\n- More flexible filtering\n- RGB channel colouring\n- Completely variable font size\n- Sidebar tabs\n- Unread counts\n- Screenshot mode (obfuscate names)\n\nChat 3 is forked from Chat 2, which was originally written by Anna.\n\nIf you are already using Chat 2, please disable it before enabling Chat 3.\nChat 3 will refuse to load if Chat 2 is enabled. If you have an existing Chat\n2 configuration, it will be copied over on first load.\n\nDifferences from Chat 2:\n- Clickable URLs\n- Add a button to only copy the message content, not including the sender\n- Ability to select ExtraChat channels as input channels for tabs\n- Replaced copy popover with clipboard copy\n- Button to fully delete database (to save disk space and speed up load times)\n- Various fixes\n- Upgraded to .NET 8.0",
     "Tags": null,
     "InternalName": "ChatThree",
     "AssemblyVersion": "3.2.0.0",
