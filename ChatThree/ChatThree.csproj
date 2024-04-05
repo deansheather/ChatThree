@@ -79,9 +79,12 @@
 
     <ItemGroup>
         <EmbeddedResource Update="Resources\Language.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
+            <Generator>MSBuild:Compile</Generator>
             <LastGenOutput>Language.Designer.cs</LastGenOutput>
+            <StronglyTypedFileName>Resources\Language.Designer.cs</StronglyTypedFileName>
+            <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+            <StronglyTypedNamespace>ChatThree.Resources</StronglyTypedNamespace>
+            <StronglyTypedClassName>Language</StronglyTypedClassName>
         </EmbeddedResource>
     </ItemGroup>
-
 </Project>
